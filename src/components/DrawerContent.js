@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { DrawerContentScrollView, DrawerItem, useDrawerProgress } from '@react-navigation/drawer';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import {
@@ -12,8 +12,14 @@ import {
     useTheme,
 } from 'react-native-paper';
 import Animated, { interpolate } from 'react-native-reanimated';
+import { AuthContext, PreferencesContext } from '../contexts';
+import { iniciale } from '../utils/commo';
 
 export const DrawerContent = (props) => {
+
+
+    const { user, logOut } = useContext(AuthContext);
+    const { toggleTheme, isThemeDark } = useContext(PreferencesContext);
 
     const paperTheme = useTheme();
 
@@ -24,16 +30,17 @@ export const DrawerContent = (props) => {
         outputRange: [-100, -85, -70, -45, 0],
     });
 
+    const { veNombre, veId } = user;
+
+
+
     return (
         <DrawerContentScrollView {...props}>
             <Animated.View
-                style={[
-                    styles.drawerContent,
-                    {
-                        backgroundColor: paperTheme.colors.surface,
-                        transform: [{ translateX }],
-                    },
-                ]}>
+                style={[styles.drawerContent, {
+                    backgroundColor: paperTheme.colors.surface,
+                    transform: [{ translateX }],
+                }]}>
                 <View style={styles.userInfoSection}>
                     <TouchableOpacity
                         style={{ marginLeft: 10 }}
@@ -41,47 +48,38 @@ export const DrawerContent = (props) => {
                             props.navigation.toggleDrawer();
                         }}>
                         <Avatar.Text
-                            label="XD"
-                            size={50}
+                            label={iniciale(veNombre)}
+                            size={45}
                         />
                     </TouchableOpacity>
-                    <Title style={styles.title}>Dawid Urbaniak</Title>
-                    <Caption style={styles.caption}>@trensik</Caption>
+                    <Title style={styles.title}>{veNombre}</Title>
+                    <Caption style={styles.caption}>Codigo: {veId}</Caption>
                 </View>
                 <Drawer.Section style={styles.drawerSection}>
                     <DrawerItem
-                        label="Profile"
+                        label="Perfil"
                         onPress={() => { }}
                     />
                     <DrawerItem
-                        label="Preferences"
-                        onPress={() => { }}
-                    />
-                    <DrawerItem
-                        label="Bookmarks"
+                        label="Configuración"
                         onPress={() => { }}
                     />
                 </Drawer.Section>
-                <Drawer.Section title="Preferences">
-                    <TouchableRipple onPress={() => { }}>
+                <Drawer.Section title="Preferencias">
+                    <TouchableRipple onPress={() => toggleTheme()}>
                         <View style={styles.preference}>
-                            <Text>Dark Theme</Text>
+                            <Text>Tema oscuro</Text>
                             <View pointerEvents="none">
-                                <Switch value={false} />
-                            </View>
-                        </View>
-                    </TouchableRipple>
-                    <TouchableRipple onPress={() => { }}>
-                        <View style={styles.preference}>
-                            <Text>RTL</Text>
-                            <View pointerEvents="none">
-                                <Switch value={false} />
+                                <Switch
+                                    style={[{ backgroundColor: paperTheme.colors.accent }]}
+                                    color={'red'}
+                                    value={isThemeDark} />
                             </View>
                         </View>
                     </TouchableRipple>
                     <DrawerItem
                         label="Salir"
-                        onPress={() => { }}
+                        onPress={logOut}
                     />
                 </Drawer.Section>
             </Animated.View>

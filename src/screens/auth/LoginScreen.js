@@ -1,19 +1,35 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Divider, Text, TextInput } from 'react-native-paper';
-import { Background, Logo, Titulo, Button } from '../../components';
-import { useForm } from '../../hooks/useForm';
+import React, { useContext, useEffect, useState } from "react";
+import { Alert, Keyboard, StyleSheet, View } from "react-native";
+import { Divider, Text, TextInput } from "react-native-paper";
+import { Background, Logo, Titulo, Button } from "../../components";
+import { AuthContext } from "../../contexts";
+import { useForm } from "../../hooks/useForm";
 
 export const LoginScreen = () => {
 
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
 
+  const { signIn, errorMessage, removeError } = useContext(AuthContext);
+
   const { codigo, onChange } = useForm({
     codigo: "",
   });
 
+
+  useEffect(() => {
+    if (errorMessage.length === 0) return;
+
+    Alert.alert("Login incorrecto", errorMessage, [{
+      text: "Ok",
+      onPress: removeError,
+    }]);
+
+  }, [errorMessage]);
+
+
   const onLogin = () => {
     Keyboard.dismiss();
+    signIn({ codigo });
   };
 
   return (
@@ -37,16 +53,19 @@ export const LoginScreen = () => {
           value={codigo}
           secureTextEntry={isPasswordSecure}
           right={<TextInput.Icon icon={isPasswordSecure ? "eye" : "eye-off"}
-            onPress={() => setIsPasswordSecure(!isPasswordSecure)} />}
+                                 onPress={() => setIsPasswordSecure(!isPasswordSecure)} />}
           onChangeText={(value) => onChange(value, "codigo")}
         />
-        <Button mode="contained" onPress={onLogin}>
+        <Button
+          mode="contained"
+          onPress={onLogin}
+          disabled={codigo.length > 2 ? false : true}>
           Ingresar
         </Button>
       </View>
     </Background>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

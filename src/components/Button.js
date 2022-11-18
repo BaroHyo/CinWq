@@ -22,7 +22,7 @@ export const Button = ({ mode, style, children, ...props }) => (
 const styles = StyleSheet.create({
   button: {
     width: '100%',
-    marginVertical: 10,
+    marginVertical: 20,
   },
   text: {
     fontWeight: 'bold',

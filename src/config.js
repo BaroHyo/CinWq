@@ -1,4 +1,6 @@
+export const NAME = {
 
+}
 
 
 export const menu = [
@@ -11,13 +13,13 @@ export const menu = [
     {
         id: 2,
         nombre: "CLIENTES",
-        component: "TabCliente",
+        component: "Cliente",
         img: require("../src/assets/home/Cliente.png"),
     },
     {
         id: 3,
         nombre: "PEDIDOS",
-        component: "PedidoStack",
+        component: "Pedido",
         img: require("../src/assets/home/Pedido.png"),
     },
     {
@@ -35,7 +37,13 @@ export const menu = [
     {
         id: 6,
         nombre: "MAPA GPS.",
-        component: "MapaScreen",
+        component: "Mapa",
         img: require("../src/assets/home/localizacion.png"),
+    },
+    {
+        id: 7,
+        nombre: "DISTRIBUCIÓN",
+        component: "TabDestribucion",
+        img: require("../src/assets/home/Distribucion.png"),
     },
 ];

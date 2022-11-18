@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useReducer } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthReducer } from "./AuthReducer";
 import CinApi from "../apis/CinApi";
- 
+
 export const AuthContext = createContext({});
 
 const authInicialState = {
@@ -24,11 +24,11 @@ export const AuthProvider = ({ children }) => {
 
     const codigo = await AsyncStorage.getItem("codigo");
 
+
     if (!codigo) return dispatch({ type: "notAuthenticated" });
 
     try {
       const { data } = await CinApi.get(`/Vendedor/ObtenerVendedor/${codigo}`);
-      //console.log(data.response);
       if (!data.response) {
         return dispatch({ type: "notAuthenticated" });
       }
@@ -50,8 +50,9 @@ export const AuthProvider = ({ children }) => {
 
   const signIn = async ({ codigo }) => {
     try {
+
       const { data } = await CinApi.get(`/Vendedor/ObtenerVendedor/${codigo}`);
-      //rconsole.log(data);
+
       if (!data.response) {
         dispatch({
           type: "addError",
